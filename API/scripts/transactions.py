@@ -69,7 +69,8 @@ def get_transactions_list(id, date=None, type=None, inOut=None, customProv=None,
     if date:
         placeholders = ','.join('?' for _ in date)
         where_clauses.append(f"STRFTIME('%m', DT_REFE) IN ({placeholders})")
-        params.extend(map(str, date))
+        # Format each month as a zero-padded string (e.g., 5 -> '05') to match STRFTIME('%m')
+        params.extend([f"{m:02d}" for m in date])
 
     # type filter (transaction description)
     if type:
