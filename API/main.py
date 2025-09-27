@@ -12,7 +12,13 @@ local_origins = [
     "http://localhost:3000",  # React
     "http://127.0.0.1:5500",  # VS Code Live Server
 ]
-CORS(app, resources={r"/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}}, supports_credentials=True) # Covers /transactions/* and /cnae/*
+
+# Apply CORS to all routes. Using a list of prefixes is more explicit.
+CORS(app, resources={
+    r"/transactions/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]},
+    r"/cnae/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]},
+    r"/api/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}
+}, supports_credentials=True)
 
 
 # Preserve the order of keys in JSON responses
