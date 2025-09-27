@@ -36,5 +36,14 @@ def transactions_list():
         return jsonify({'error': 'Cliente não encontrado'}), 404
     return jsonify(data)
 
+@app.route('/transactions/graphs/barChart', methods=['GET'])
+def transactions_bar_chart():
+    """Endpoint to get monthly income/expense data for a bar chart."""
+    id = request.args.get('id')
+    if not id:
+        return jsonify({'error': 'O parâmetro "id" do cliente é obrigatório'}), 400
+    data = transactions.get_bar_chart_data(id)
+    return jsonify(data)
+
 if __name__ == '__main__':
     app.run(debug=True)

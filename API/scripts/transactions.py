@@ -124,3 +124,37 @@ def get_transactions_list(id, date=None, type=None, inOut=None, customProv=None,
         "totalPages": total_pages,
         "transactions": processed_transactions
     }
+
+def get_bar_chart_data(id):
+    """Fetches monthly income and expense data for a bar chart."""
+    conn = get_db()
+    cur = conn.cursor()
+
+    # A mapping of month numbers to abbreviated Portuguese names.
+    month_map = {
+        '01': 'Jan', '02': 'Fev', '03': 'Mar', '04': 'Abr', '05': 'Mai', '06': 'Jun',
+        '07': 'Jul', '08': 'Ago', '09': 'Set', '10': 'Out', '11': 'Nov', '12': 'Dez'
+    }
+
+    query = """
+        SELECT
+            STRFTIME('%m', DT_REFE) as month_num,
+            SUM(CASE WHEN ID_RCBE = ? THEN VL ELSE 0 END) as income,
+            SUM(CASE WHEN ID_PGTO = ? THEN VL ELSE 0 END) as expense
+        FROM TRANSACOES
+        WHERE ID_PGTO = ? OR ID_RCBE = ?
+        GROUP BY month_num
+        ORDER BY month_num;
+    """
+    cur.execute(query, (id, id, id, id))
+    
+    chart_data = []
+    for row in cur.fetchall():
+        chart_data.append({
+            "month": month_map.get(row['month_num'], 'Unk'),
+            "income": row['income'],
+            "expense": row['expense']
+        })
+
+    conn.close()
+    return chart_data

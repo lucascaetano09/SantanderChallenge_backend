@@ -118,3 +118,45 @@ If the client `id` does not exist in the database.
   "error": "Cliente não encontrado"
 }
 ```
+
+---
+
+## 3. Get Bar Chart Data
+
+Retrieves aggregated monthly income and expense data for a specific client, suitable for rendering a bar chart.
+
+- **URL:** `/transactions/graphs/barChart`
+- **Method:** `GET`
+
+### Query Parameters
+
+| Parameter | Type   | Required | Description                          |
+| :-------- | :----- | :------- | :----------------------------------- |
+| `id`      | string | Yes      | The unique identifier of the client. |
+
+### Example Request
+
+```http
+GET /transactions/graphs/barChart?id=CLIENT_ID_123
+```
+
+### Example Response
+
+**On Success (200 OK):**
+
+Returns a JSON array where each object represents a month with its total income and expenses.
+
+```json
+[
+  {
+    "month": "Set",
+    "income": 25000,
+    "expense": 12000
+  },
+  {
+    "month": "Out",
+    "income": 32000,
+    "expense": 18500
+  }
+]
+```
