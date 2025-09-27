@@ -4,10 +4,14 @@ from scripts import transactions, cnae
 
 app = Flask(__name__)
 
-# Configure CORS to be more specific and robust.
-# This allows requests from any origin, with common methods and headers,
-# and supports credentials, which is a common requirement for web apps.
-CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}}, supports_credentials=True)
+# Define allowed origins for local development.
+# Using a wildcard "*" with `supports_credentials=True` is not allowed by browsers.
+# Instead, we list common local development server origins.
+local_origins = [
+    "http://localhost:3000",  # React
+    "http://127.0.0.1:5500",  # VS Code Live Server
+]
+CORS(app, resources={r"/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}}, supports_credentials=True)
 
 
 # Preserve the order of keys in JSON responses
