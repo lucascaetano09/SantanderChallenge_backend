@@ -6,7 +6,13 @@ import json
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)  # Permite chamadas do frontend
+
+# Configure CORS to be more specific and robust.
+# This allows requests from any origin, with common methods and headers,
+# and supports credentials, which is a common requirement for web apps.
+CORS(app, resources={r"/api/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}}, supports_credentials=True)
+
+app.json.sort_keys = False
 
 class ChatAgentSimples:
     def __init__(self):
