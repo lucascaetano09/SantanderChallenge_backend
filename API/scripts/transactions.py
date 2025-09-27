@@ -4,9 +4,9 @@ import math
 from datetime import datetime
 
 # Construct an absolute path to the database file.
-# This goes up one directory from `scripts` to the `API` directory.
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.path.join(BASE_DIR, 'banco.db')
+# This goes up two directories from `scripts` to the project root.
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DB_PATH = os.path.join(PROJECT_ROOT, 'banco.db')
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
