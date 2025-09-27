@@ -4,8 +4,11 @@ from scripts import transactions, cnae
 
 app = Flask(__name__)
 
-# Enable CORS for all routes, allowing requests from any origin.
-CORS(app)
+# Configure CORS to be more specific and robust.
+# This allows requests from any origin, with common methods and headers,
+# and supports credentials, which is a common requirement for web apps.
+CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}}, supports_credentials=True)
+
 
 # Preserve the order of keys in JSON responses
 app.json.sort_keys = False
