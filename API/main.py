@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from scripts import transactions, cnae, chat
+from scripts import transactions, cnae, chat, maturity
 from datetime import datetime
 
 app = Flask(__name__)
@@ -17,6 +17,7 @@ local_origins = [
 CORS(app, resources={
     r"/transactions/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]},
     r"/cnae/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]},
+    r"/maturity/*": {"origins": local_origins, "methods": ["GET", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]},
     r"/api/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}
 }, supports_credentials=True)
 
@@ -82,6 +83,22 @@ def cnae_list():
     page = request.args.get('page', 1, type=int)
 
     data = cnae.get_cnae_list(cnae=cnae_param, page=page)
+    return jsonify(data)
+
+@app.route('/maturity/overview', methods=['GET'])
+def maturity_overview():
+    """Endpoint to get an overview of company maturity stages."""
+    data = maturity.get_maturity_overview()
+    return jsonify(data)
+
+@app.route('/maturity/list', methods=['GET'])
+def maturity_list():
+    """Endpoint to get a paginated list of companies, filterable by maturity state."""
+    # Get optional filter and pagination parameters from the request
+    state = request.args.get('state')
+    page = request.args.get('page', 1, type=int)
+
+    data = maturity.get_maturity_list(state=state, page=page)
     return jsonify(data)
 
 

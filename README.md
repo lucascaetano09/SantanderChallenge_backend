@@ -244,3 +244,90 @@ Returns a JSON object containing pagination info and an array of account objects
   ]
 }
 ```
+
+---
+
+## 6. Get Maturity Overview
+
+Retrieves a summary of company maturity classifications. It returns the count of companies in each maturity stage (`Iniciante`, `Madura`, `Expansão`, `Declínio`).
+
+- **URL:** `/maturity/overview`
+- **Method:** `GET`
+
+### Query Parameters
+
+This endpoint does not require any query parameters.
+
+### Example Request
+
+```http
+GET /maturity/overview
+```
+
+### Example Response
+
+**On Success (200 OK):**
+
+Returns a JSON object where keys are the maturity stages and values are the count of companies in that stage.
+
+```json
+{
+  "Iniciante": 150,
+  "Madura": 450,
+  "Expansão": 200,
+  "Declínio": 50
+}
+}
+```
+
+---
+
+## 7. Get Accounts by Maturity
+
+Retrieves a paginated list of company accounts, with an optional filter for maturity state. For each account, only the most recent data record is returned.
+
+- **URL:** `/maturity/list`
+- **Method:** `GET`
+
+### Query Parameters
+
+| Parameter | Type    | Required | Description                                                                            |
+| :-------- | :------ | :------- | :------------------------------------------------------------------------------------- |
+| `state`   | string  | No       | The maturity state to filter by (e.g., `Iniciante`, `Madura`, `Expansão`, `Declínio`). |
+| `page`    | integer | No       | The page number for pagination (defaults to 1). Each page contains 20 accounts.        |
+
+### Example Requests
+
+**Basic Request (all states):**
+
+```http
+GET /maturity/list?page=1
+```
+
+**Filtered Request (only "Madura" companies):**
+
+```http
+GET /maturity/list?state=Madura&page=1
+```
+
+### Example Response
+
+**On Success (200 OK):**
+
+Returns a JSON object containing pagination info and an array of account objects.
+
+```json
+{
+  "totalPages": 10,
+  "accounts": [
+    {
+      "ID": "ID_EMPRESA_001",
+      "VL_FATU": "R$500000",
+      "VL_SLDO": "R$120000",
+      "DT_ABRT": "10/05/2015",
+      "DS_CNAE": "Comércio varejista de mercadorias em geral",
+      "DT_REFE": "31/12/2023"
+    }
+  ]
+}
+```
