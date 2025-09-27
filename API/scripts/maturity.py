@@ -95,11 +95,11 @@ def get_maturity_list(state=None, page=1):
 
         processed_accounts.append({
             "ID": row['ID'],
-            "VL_FATU": f"R${row['VL_FATU']}",
-            "VL_SLDO": f"R${row['VL_SLDO']}",
-            "DT_ABRT": opening_date,
-            "DS_CNAE": row['DS_CNAE'],
-            "DT_REFE": ref_date
+            "FATURAMENTO": f"R${row['VL_FATU']}",
+            "SALDO": f"R${row['VL_SLDO']}",
+            "DATA_ABERTURA": opening_date,
+            "CNAE": row['DS_CNAE'],
+            "DATA_REFERENCIA": ref_date
         })
 
     conn.close()

@@ -322,11 +322,11 @@ Returns a JSON object containing pagination info and an array of account objects
   "accounts": [
     {
       "ID": "ID_EMPRESA_001",
-      "VL_FATU": "R$500000",
-      "VL_SLDO": "R$120000",
-      "DT_ABRT": "10/05/2015",
-      "DS_CNAE": "Comércio varejista de mercadorias em geral",
-      "DT_REFE": "31/12/2023"
+      "FATURAMENTO": "R$500000",
+      "SALDO": "R$120000",
+      "DATA_ABERTURA": "10/05/2015",
+      "CNAE": "Comércio varejista de mercadorias em geral",
+      "DATA_REFERENCIA": "31/12/2023"
     }
   ]
 }
