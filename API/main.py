@@ -1,7 +1,11 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from scripts import transactions
 
 app = Flask(__name__)
+
+# Enable CORS for all routes, allowing requests from any origin.
+CORS(app)
 
 # Preserve the order of keys in JSON responses
 app.json.sort_keys = False
