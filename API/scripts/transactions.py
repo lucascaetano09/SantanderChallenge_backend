@@ -125,7 +125,7 @@ def get_transactions_list(id, date=None, type=None, inOut=None, customProv=None,
         "transactions": processed_transactions
     }
 
-def get_bar_chart_data(id):
+def get_transactions_barChart(id):
     """Fetches monthly income and expense data for a bar chart."""
     conn = get_db()
     cur = conn.cursor()

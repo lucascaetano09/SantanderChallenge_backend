@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from scripts import transactions
+from scripts import transactions, cnae
 
 app = Flask(__name__)
 
@@ -46,7 +46,25 @@ def transactions_bar_chart():
     id = request.args.get('id')
     if not id:
         return jsonify({'error': 'O parâmetro "id" do cliente é obrigatório'}), 400
-    data = transactions.get_bar_chart_data(id)
+    data = transactions.get_transactions_barChart(id)
+    return jsonify(data)
+
+@app.route('/cnae/graphs/pieChart', methods=['GET'])
+def cnae_pie_chart():
+    """Endpoint to get data for a CNAE pie chart."""
+    data = cnae.get_cnae_pieChart()
+    return jsonify(data)
+
+@app.route('/cnae/list', methods=['GET'])
+def cnae_list():
+    """Endpoint to get a paginated list of accounts for a specific CNAE."""
+    cnae_param = request.args.get('cnae')
+    if not cnae_param:
+        return jsonify({'error': 'O parâmetro "cnae" é obrigatório'}), 400
+
+    page = request.args.get('page', 1, type=int)
+
+    data = cnae.get_cnae_list(cnae=cnae_param, page=page)
     return jsonify(data)
 
 if __name__ == '__main__':

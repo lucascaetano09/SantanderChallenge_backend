@@ -160,3 +160,87 @@ Returns a JSON array where each object represents a month with its total income 
   }
 ]
 ```
+
+---
+
+## 4. Get CNAE Pie Chart Data
+
+Retrieves aggregated data of the top 5 business activities (CNAE) based on total revenue, suitable for rendering a pie chart.
+
+- **URL:** `/cnae/graphs/pieChart`
+- **Method:** `GET`
+
+### Query Parameters
+
+This endpoint does not require any query parameters.
+
+### Example Request
+
+```http
+GET /cnae/graphs/pieChart
+```
+
+### Example Response
+
+**On Success (200 OK):**
+
+Returns a JSON array where each object represents one of the top 5 CNAEs, including the count of accounts associated with it.
+
+```json
+[
+  {
+    "cnae": "Comércio varejista de mercadorias em geral",
+    "accounts": 42
+  },
+  {
+    "cnae": "Atividades de consultoria em gestão empresarial",
+    "accounts": 25
+  }
+]
+```
+
+---
+
+## 5. Get Accounts by CNAE
+
+Retrieves a paginated list of accounts belonging to a specific business activity (CNAE). For accounts with multiple records, only the most recent one is returned.
+
+- **URL:** `/cnae/list`
+- **Method:** `GET`
+
+### Query Parameters
+
+| Parameter | Type    | Required | Description                                                                     |
+| :-------- | :------ | :------- | :------------------------------------------------------------------------------ |
+| `cnae`    | string  | Yes      | The exact "DS_CNAE" description to filter accounts by.                          |
+| `page`    | integer | No       | The page number for pagination (defaults to 1). Each page contains 12 accounts. |
+
+### Example Request
+
+```http
+GET /cnae/list?cnae=Cultivo%20de%20soja&page=1
+```
+
+### Example Response
+
+**On Success (200 OK):**
+
+Returns a JSON object containing pagination info and an array of account objects.
+
+```json
+{
+  "totalPages": 3,
+  "accounts": [
+    {
+      "account": "ACCOUNT_ID_001",
+      "invoicing": "R$75000",
+      "date": "15/03/2018"
+    },
+    {
+      "account": "ACCOUNT_ID_002",
+      "invoicing": "R$120000",
+      "date": "22/07/2020"
+    }
+  ]
+}
+```
