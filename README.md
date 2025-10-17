@@ -4,6 +4,138 @@ This document provides details on the available API endpoints, including request
 
 ---
 
+## 0. Authentication API Endpoints
+
+These endpoints handle user registration and login.
+
+---
+
+### 0.1. User Sign Up
+
+Registers a new user with a unique login and password.
+
+- **URL:** `/auth/signUp`
+- **Method:** `POST`
+
+#### Request Body
+
+A JSON object containing the user's login and password.
+
+| Parameter  | Type   | Required | Description                            |
+| :--------- | :----- | :------- | :------------------------------------- |
+| `login`    | string | Yes      | The user's unique login (e.g., email). |
+| `password` | string | Yes      | The user's chosen password.            |
+
+#### Example Request
+
+```http
+POST /auth/signUp
+Content-Type: application/json
+
+{
+  "login": "user@example.com",
+  "password": "securepassword123"
+}
+```
+
+#### Example Response
+
+**On Success (201 Created):**
+
+```json
+{
+  "success": true,
+  "message": "Usuário registrado com sucesso."
+}
+```
+
+**On Error (400 Bad Request):**
+
+If `login` or `password` is missing.
+
+```json
+{
+  "success": false,
+  "error": "Login e senha são obrigatórios."
+}
+```
+
+**On Error (409 Conflict):**
+
+If the `login` already exists.
+
+```json
+{
+  "success": false,
+  "error": "Usuário já existe."
+}
+```
+
+---
+
+### 0.2. User Login
+
+Authenticates a user with their login and password.
+
+- **URL:** `/auth/login`
+- **Method:** `POST`
+
+#### Request Body
+
+A JSON object containing the user's login and password.
+
+| Parameter  | Type   | Required | Description          |
+| :--------- | :----- | :------- | :------------------- |
+| `login`    | string | Yes      | The user's login.    |
+| `password` | string | Yes      | The user's password. |
+
+#### Example Request
+
+```http
+POST /auth/login
+Content-Type: application/json
+
+{
+  "login": "user@example.com",
+  "password": "securepassword123"
+}
+```
+
+#### Example Response
+
+**On Success (200 OK):**
+
+```json
+{
+  "success": true,
+  "message": "Login bem-sucedido."
+}
+```
+
+**On Error (400 Bad Request):**
+
+If `login` or `password` is missing.
+
+```json
+{
+  "success": false,
+  "error": "Login e senha são obrigatórios."
+}
+```
+
+**On Error (401 Unauthorized):**
+
+If the credentials are invalid.
+
+```json
+{
+  "success": false,
+  "error": "Credenciais inválidas."
+}
+```
+
+---
+
 ## 1. Get Client Overview
 
 Retrieves a summary of financial statistics for a specific client.
