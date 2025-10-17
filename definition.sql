@@ -18,3 +18,9 @@ CREATE TABLE TRANSACOES (
     FOREIGN KEY (ID_PGTO) REFERENCES ID(ID),
     FOREIGN KEY (ID_RCBE) REFERENCES ID(ID)
 );
+
+CREATE TABLE IF NOT EXISTS USERS (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT, -- Chave técnica do usuário
+    login TEXT UNIQUE NOT NULL,           -- Login do usuário (e.g., email)
+    pwd TEXT NOT NULL                     -- Senha hash
+);

@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from scripts import transactions, cnae, chat, maturity
+from scripts import transactions, cnae, chat, maturity, userCrud
 from datetime import datetime
 
 app = Flask(__name__)
@@ -18,7 +18,8 @@ CORS(app, resources={
     r"/transactions/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]},
     r"/cnae/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]},
     r"/maturity/*": {"origins": local_origins, "methods": ["GET", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]},
-    r"/api/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]}
+    r"/api/*": {"origins": local_origins, "methods": ["GET", "POST", "OPTIONS"], "allow_headers": ["Content-Type", "Authorization"]},
+    r"/auth/*": {"origins": local_origins, "methods": ["POST", "OPTIONS"], "allow_headers": ["Content-Type"]}
 }, supports_credentials=True)
 
 
@@ -27,6 +28,38 @@ app.json.sort_keys = False
 
 # Instantiate the chat agent globally
 chat_agent = chat.ChatAgentSimples()
+
+# --- AUTHENTICATION API ENDPOINTS ---
+
+@app.route('/auth/signUp', methods=['POST'])
+def sign_up():
+    """Endpoint to register a new user."""
+    try:
+        data = request.json
+        login = data.get('login')
+        password = data.get('password')
+
+        result, status_code = userCrud.register_user(login, password)
+        return jsonify(result), status_code
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/auth/login', methods=['POST'])
+def login():
+    """Endpoint to verify user credentials and log in."""
+    try:
+        data = request.json
+        login = data.get('login')
+        password = data.get('password')
+
+        result, status_code = userCrud.verify_user(login, password)
+        return jsonify(result), status_code
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# --- DATA API ENDPOINTS ---
+
 
 @app.route('/transactions/overview', methods=['GET'])
 def transactions_overview():
